@@ -26,6 +26,7 @@ static struct Command commands[] = {
 	{ "help", "Display this list of commands", mon_help },
 	{ "kerninfo", "Display information about the kernel", mon_kerninfo },
 	{ "backtrace", "Display a backtrace of the stack", mon_backtrace },
+	{ "show", "Display colorful ASCII art", mon_show }
 };
 
 /***** Implementations of basic kernel monitor commands *****/
@@ -91,7 +92,18 @@ mon_backtrace(int argc, char **argv, struct Trapframe *tf)
 	return 0;
 }
 
+int
+mon_show(int argc, char **argv, struct Trapframe *tf)
+{
+	char arr[12] = "Is_this_art?";
+	for(int i = 31; i < 43; i++)
+	{
+		cprintf("\033[0;%dm%c \033[m", (i % 7) + 31, arr[i-31]);
+	}
+	cprintf("\n");
 
+	return 0;
+}
 
 /***** Kernel monitor command interpreter *****/
 
