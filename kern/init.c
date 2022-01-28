@@ -29,6 +29,14 @@ i386_init(void)
 	// Lab 2 memory management initialization functions
 	mem_init();
 
+	// int x = 1, y = 3, z = 4;
+	// cprintf("x %d, y %x, z %d\n", x, y, z);
+	
+	// unsigned int i = 0x00646c72;
+	// cprintf("H%x Wo%s", 57616, &i);
+	// cprintf("x=%d y=%d\n", 3);
+	// cprintf("x=%d y=%d\n", 3);
+
 	// Drop into the kernel monitor.
 	while (1)
 		monitor(NULL);
