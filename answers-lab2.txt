@@ -1,0 +1,23 @@
+ECE 469 Lab 2 Writeup
+
+a) 	1023    	0xffc000000   
+	.			.	
+    	.			.		Page tables for physical memory
+	.			.
+	960		0xf0000000	
+         	959		0xefc00000		Page table for bootstack
+	958		0xef800000		Page table for MMIO
+	957		0xef400000		Page table for physical addresses
+	956		0xef000000		“					“
+     	2	  	0x00800000		unmapped
+	1		0x00400000		unmapped
+	0		0x00000000		Kernel and user environment
+
+
+b) We added protections to the Kernel’s mapped regions in virtual memory to prevent user writing. Specifically, the PTE_U flag, which allows user access, is not set for the region in virtual memory mapped to the kernel.
+
+c) The maximum physical memory allowed by the OS is 256 MB. This is specified in kern/pmap.h.
+
+d) 
+
+e)The switch happens at just after paging is enabled, at line 68 of entry.s. We mapped physical memory to virtual addresses before the switch, so it is still possible to operate at the low EIP. The kernel needs to be loaded at 0xF0000000, which is why we need to make this transition.
