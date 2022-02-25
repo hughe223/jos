@@ -285,8 +285,6 @@ region_alloc(struct Env *e, void *va, size_t len)
 	int numPages = (top - base) / PGSIZE;
 	for(size_t i = 0; i < numPages; i++)
 	{
-		// if(!page_lookup(e->env_pgdir, base + (i * PGSIZE), 0))
-		// {
 		page = page_alloc(0);
 		if(page == NULL)
 		{

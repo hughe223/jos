@@ -600,7 +600,28 @@ int
 user_mem_check(struct Env *env, const void *va, size_t len, int perm)
 {
 	// LAB 3: Your code here.
-	
+	char * curr = (char *) va;
+	char * end = ROUNDUP((char *) (va + len), PGSIZE);
+
+	for(curr; curr < end; curr += PGSIZE)
+	{
+		if((uintptr_t) curr >= ULIM)
+		{
+			user_mem_check_addr = (uintptr_t) curr;
+			return -E_FAULT;
+		}
+		pte_t * page = pgdir_walk(env->env_pgdir, curr, 0);
+		cprintf("page: %x\n", page);
+		if(!page || (*page & perm) != perm)
+		{
+			user_mem_check_addr = (uintptr_t) curr;
+			return -E_FAULT;
+		}
+		if((uintptr_t) curr % PGSIZE != 0)
+		{
+			curr = ROUNDDOWN(curr, PGSIZE);
+		}
+	}
 
 	return 0;
 }

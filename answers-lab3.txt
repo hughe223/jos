@@ -1,0 +1,10 @@
+1. The unique interrupt vectors allow the operating system to distinguish between different traps, and handle them accordingly.
+
+
+2.  There was nothing extra that needed to be added for softint to work. It invokes interrupt vector 13 because the user is trying to
+    access the kernel's page fault handler (14), which it does not have permission to do. These permissions are defined in the SETGATE
+    macro, and since interrupt vector 14 has permission level 0, while the user operates from permission level 3, the general protection
+    fault activates. Similar behavior was discovered during development of the breakpoint interrupt. We originally had it set to permission
+    level 0, but the user debugger could not set a breakpoint without tripping the general protection fault, so we had to change permissions.
+    If the user was allowed to invoke the page fault interrupt, then buggy user code could potentially destroy its 
+    own environment. The kernel permissions protect against this behavior.
